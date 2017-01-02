@@ -26,7 +26,7 @@ public class CapesAPI {
    */
   public static boolean setCape(GameProfile profile, Map map) {
     try {
-      map.put(MinecraftProfileTexture.Type.CAPE, new MinecraftProfileTexture("https://capesapi.com/api/v1/" + profile.getId() + "/getCape", null)
+      map.put(MinecraftProfileTexture.Type.CAPE, new MinecraftProfileTexture("https://capesapi.com/api/v1/" + profile.getId() + "/getCape", null);
       Runtime.getRuntime().addShutdownHook(new Thread(() -> emptyCache()));
       return true;
     } catch (Exception e) {
