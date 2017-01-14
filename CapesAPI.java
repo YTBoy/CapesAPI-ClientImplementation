@@ -1,12 +1,19 @@
-package com.halfpetal.capesapi;
+package com.capeapi;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.Minecraft;
-import org.apache.commons.io.FileUtils;
+import net.minecraft.client.renderer.IImageBuffer;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.texture.ITextureObject;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.util.ResourceLocation;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,35 +21,57 @@ import java.util.UUID;
  * A simple CapesAPI implementation for Minecraft client developers.
  *
  * @author  Matthew Hatcher
+ * @author Marco MC
  * @version 1.0.0, January 2017
  */
 public class CapesAPI {
-  /**
-   * Downloads the user's cape from CapesAPI and add it to the skin map.
-   *
-   * @param  profile The profile to use to grab the cape
-   * @param  map     The skin map to apply the cape to
-   * @return         The success of skin map application
-   */
-  public static boolean setCape(GameProfile profile, Map map) {
-    try {
-      map.put(MinecraftProfileTexture.Type.CAPE, new MinecraftProfileTexture("https://capesapi.com/api/v1/" + profile.getId() + "/getCape", null);
-      Runtime.getRuntime().addShutdownHook(new Thread(() -> emptyCache()));
-      return true;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
+
+    private static Map<UUID, ResourceLocation> capes = new HashMap<>();
+
+    /**
+     * Load cape from the webserver and put the cape as resourcelocation to the capes hashmap
+     * @param uuid
+     */
+    public static void loadCape(final UUID uuid) {
+        String url = "https://capesapi.com/api/v1/" + uuid.toString() + "/getCape";
+        final ResourceLocation resourceLocation = new ResourceLocation("capeapi/capes/" + uuid.toString() + ".png");
+        TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
+        
+        IImageBuffer iImageBuffer = new IImageBuffer() {
+
+            @Override
+            public BufferedImage parseUserSkin(BufferedImage image) {
+                return image;
+            }
+
+            @Override
+            public void skinAvailable() {
+                capes.put(uuid, resourceLocation);
+            }
+        };
+
+        ThreadDownloadImageData threadDownloadImageData = new ThreadDownloadImageData((File) null, url, (ResourceLocation) null, iImageBuffer);
+        textureManager.loadTexture(resourceLocation, threadDownloadImageData);
     }
-  }
-  
-  /**
-   * Clears the player's cape cache.
-   */
-  public static void emptyCache() {
-    try {
-      FileUtils.deleteDirectory(new File(Minecraft.getMinecraft().mcDataDir, "assets/skins/"));
-    } catch (IOException e) {
-      e.printStackTrace();
+
+    /**
+     * Remove the cape of the user from the cape hashmap
+     * @param uuid
+     */
+    public static void deleteCape(UUID uuid) {
+        capes.remove(uuid);
     }
-  }
+
+    /**
+     * Get the cape of the user from the cape hashmap
+     * @param uuid
+     * @return
+     */
+     public static ResourceLocation getCape(UUID uuid) {
+        return capes.containsKey(uuid) ? capes.get(uuid) : null;
+     }
+
+     public static boolean hasCape(UUID uuid) {
+         return capes.containsKey(uuid);
+     }
 }
