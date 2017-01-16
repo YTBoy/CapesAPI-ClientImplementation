@@ -33,7 +33,7 @@ public class CapesAPI {
      * @param uuid
      */
     public static void loadCape(final UUID uuid) {
-        String url = "https://capesapi.com/api/v1/" + uuid.toString() + "/getCape";
+        String url = "http://capesapi.com/api/v1/" + uuid.toString() + "/getCape";
         final ResourceLocation resourceLocation = new ResourceLocation("capeapi/capes/" + uuid.toString() + ".png");
         TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
         
