@@ -1,4 +1,4 @@
-package com.capeapi;
+package com.capesapi;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IImageBuffer;
