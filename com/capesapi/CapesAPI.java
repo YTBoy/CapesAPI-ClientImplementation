@@ -22,7 +22,7 @@ import java.util.UUID;
  *
  * @author  Matthew Hatcher
  * @author  Marco MC
- * @version 2.0.0, January 2017
+ * @version 2.1.0, February 2017
  */
 public class CapesAPI {
 
