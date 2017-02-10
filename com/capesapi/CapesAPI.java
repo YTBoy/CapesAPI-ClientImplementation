@@ -26,7 +26,7 @@ import java.util.UUID;
  */
 public class CapesAPI {
 
-    private static Map<UUID, ResourceLocation> capes = new HashMap<>();
+    private static Map < UUID, ResourceLocation > capes = new HashMap < > ();
 
     /**
      * Load cape from the webserver and put the cape as resourcelocation to the capes hashmap
@@ -36,7 +36,7 @@ public class CapesAPI {
         String url = "http://capesapi.com/api/v1/" + uuid.toString() + "/getCape";
         final ResourceLocation resourceLocation = new ResourceLocation("capeapi/capes/" + uuid.toString() + ".png");
         TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
-        
+
         IImageBuffer iImageBuffer = new IImageBuffer() {
 
             @Override
@@ -67,11 +67,11 @@ public class CapesAPI {
      * @param uuid
      * @return
      */
-     public static ResourceLocation getCape(UUID uuid) {
+    public static ResourceLocation getCape(UUID uuid) {
         return capes.containsKey(uuid) ? capes.get(uuid) : null;
-     }
+    }
 
-     public static boolean hasCape(UUID uuid) {
-         return capes.containsKey(uuid);
-     }
+    public static boolean hasCape(UUID uuid) {
+        return capes.containsKey(uuid);
+    }
 }
