@@ -113,7 +113,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }
 	else if(CapesAPI.hasCape(getGameProfile().getId()))
 	{
-		return CapesAPI.getCape(getGameProfile().getId());
+	    return CapesAPI.getCape(getGameProfile().getId());
 	}
         else if (this.locationOfCape != null)
         {
