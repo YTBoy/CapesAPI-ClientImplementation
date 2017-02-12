@@ -20,7 +20,7 @@ public class UserAPI {
     static String baseURL = "http://capesapi.com/api/v1/";
 
     public static boolean hasCape(UUID uuid, String capeId) throws IOException {
-        URL url = new URL(baseURL + uuid.toString() + "/hasCape" + capeId);
+        URL url = new URL(baseURL + uuid.toString() + "/hasCape/" + capeId);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
